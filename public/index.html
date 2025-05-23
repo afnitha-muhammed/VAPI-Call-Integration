@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Call with Vapi Agent</title>
+</head>
+<body style="height:100vh; display:flex; align-items:center; justify-content:center; background:#f4f4f4; font-family:sans-serif;">
+    <div style="background:#fff; padding:30px; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.1); text-align:center;">
+    <h2 style="margin-bottom:20px;">Call Integration with VAPI Agent with twilio</h2>
+    <input type="text" id="mobileNumber" placeholder="Enter phone number" style="padding:10px 15px; width:100%; max-width:200px; margin-bottom:15px; border:1px solid #ccc; border-radius:4px; box-sizing:border-box;">
+    <button onclick="makeCall()"style="padding:10px 20px; background-color:#007bff; color:white; border:none; border-radius:4px; cursor:pointer;">Connect with Vapi Agent</button>
+    <div id="result"></div>
+    <script>
+        function makeCall() {
+            const mobileNumber = document.getElementById('mobileNumber').value.trim();
+            document.getElementById('result').innerText = 'Calling...';
+            fetch('/make-vapi-call', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mobileNumber })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('result').innerText = 'Call initiated! Call ID: ' + data.data.call.id;
+                } else {
+                    document.getElementById('result').innerText = 'Error: ' + (data.error || 'Unknown error');
+                }
+            })
+            .catch(err => {
+                document.getElementById('result').innerText;
+            });
+        }
+    </script>
+    </div>
+</body>
+</html>
